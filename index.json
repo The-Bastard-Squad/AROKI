@@ -143,13 +143,31 @@
       "releaseTrack" : "beta",
       "status" : "active",
       "version" : "0.1.1"
+    },
+    {
+      "contentRating" : "unknown",
+      "contentType" : "video",
+      "familyID" : "aniworld-expansion",
+      "id" : "aniworld-expansion",
+      "language" : "mul",
+      "manifest" : {
+        "path" : "connectors\/aniworld-expansion\/releases\/29452d11051e21263d4cf344b8020099aecb000976120ce730f31326fe5c0e66\/connector.json",
+        "sha256" : "29452d11051e21263d4cf344b8020099aecb000976120ce730f31326fe5c0e66",
+        "signature" : "iHBrd7RIiZONnmoQmHLMN9YZztBMXWAyBy0Tvy6m9omcq94m6dO\/9ybMPm4f1CvLEEWAvrHAVDCPNPO3xUxMCw=="
+      },
+      "minimumAppVersion" : "2.0.36",
+      "name" : "AniWorld",
+      "releaseNotes" : "Owner-approved public availability for Aroki 2.0.36+. Home\/Browse discovery and native playback resolver are unchanged. Sub-only: German-subtitle mirror first, English-subtitle fallback; German Dub is not included. Visible captions, spoken language and offline remain unverified.",
+      "releaseTrack" : "beta",
+      "status" : "active",
+      "version" : "0.3.2"
     }
   ],
   "enabled" : true,
-  "generatedAt" : 1789311222,
+  "generatedAt" : 1789311592,
   "name" : "AROKI Connectors",
   "publicKey" : "BYKainAr2pxVfWxSSQJHG79Xl\/mnkTuIl1ujEmR+1V4=",
   "repositoryID" : "aroki-connectors",
   "schemaVersion" : 1,
-  "signature" : "rt9dTu3ukWR+oUNSebbmCIO23PUWqiSZ2Q46CZeNGPyh\/GselRfABjIIZ1c\/X\/sKWCWxryI0f1c90B73b79gDw=="
+  "signature" : "oP+vdaJ3UYym+SVzW1w00D6C\/6qZbyHqxg7qdL1jdu5w\/Op9nu9C0VTtfrIneXUtgVz3oKbSIiYdd8TWUsemDg=="
 }
