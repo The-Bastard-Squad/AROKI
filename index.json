@@ -125,13 +125,31 @@
       "releaseTrack" : "beta",
       "status" : "active",
       "version" : "0.1.0"
+    },
+    {
+      "contentRating" : "unknown",
+      "contentType" : "video",
+      "familyID" : "synthetiq-anime-direct",
+      "id" : "synthetiq-anime-direct",
+      "language" : "en",
+      "manifest" : {
+        "path" : "connectors\/synthetiq-anime-direct\/releases\/f8746865748d162c027ec1b0afecc9bb28d35e5b066b379247f1324b3abfc92f\/connector.json",
+        "sha256" : "f8746865748d162c027ec1b0afecc9bb28d35e5b066b379247f1324b3abfc92f",
+        "signature" : "VX5FyDlROtSvojsOeikGMB3KaG2ioqwthCgOyWgX2LAh2OEN0q6eZEZtCbHKdFrcDPW3OuSjBKKp9vr0M6xLDA=="
+      },
+      "minimumAppVersion" : "2.0.38",
+      "name" : "Synthetiq Flux",
+      "releaseNotes" : "Owner-approved public availability for Aroki 2.0.38+. Basic playback and seeking have been demonstrated. Catalogue-derived episode counts are not provider-verified. Broad spoken-language, caption and offline certification remain incomplete. Downloads remain disabled. Not compatible with Aroki 1.2.",
+      "releaseTrack" : "beta",
+      "status" : "active",
+      "version" : "0.1.1"
     }
   ],
   "enabled" : true,
-  "generatedAt" : 1789158130,
+  "generatedAt" : 1789311110,
   "name" : "AROKI Connectors",
   "publicKey" : "BYKainAr2pxVfWxSSQJHG79Xl\/mnkTuIl1ujEmR+1V4=",
   "repositoryID" : "aroki-connectors",
   "schemaVersion" : 1,
-  "signature" : "fl79G3qqZN6Rd9OSue5s3CD51ZFKWd6BOjwK9zmDW\/UHHmudj\/wgzA+SBAoYpMbvb31J5SkP4CuJ2Vbuto5iAA=="
+  "signature" : "f8AdIyvDPRHe9ts5HwA0DkOAKXKgjDzDyc\/5tjVscMjZGzqIxLABMkjeaP38Htp2C10jxn5xZ18vRMmnTT4PCw=="
 }
