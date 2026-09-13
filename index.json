@@ -161,13 +161,31 @@
       "releaseTrack" : "beta",
       "status" : "active",
       "version" : "0.3.2"
+    },
+    {
+      "contentRating" : "unknown",
+      "contentType" : "video",
+      "familyID" : "anime-sama-expansion",
+      "id" : "anime-sama-expansion",
+      "language" : "fr",
+      "manifest" : {
+        "path" : "connectors\/anime-sama-expansion\/releases\/671258b736a3f857911c3aed0a0fb1ec5d3fd21d365fd023cfc01bd3279d692c\/connector.json",
+        "sha256" : "671258b736a3f857911c3aed0a0fb1ec5d3fd21d365fd023cfc01bd3279d692c",
+        "signature" : "oP4JC2+I7FSJhqGtWenzxOSXvRJZqJLX1HYbbgmlpgWDMrLuQON543ogt2dypJYAzDqNRBQByfgD6QcDjmVwDw=="
+      },
+      "minimumAppVersion" : "2.0.36",
+      "name" : "Anime-Sama",
+      "releaseNotes" : "Owner-approved public availability for Aroki 2.0.36+. Native panel, ordinal episode, Sibnet and literal Ansembed support. Playback and seeking have been demonstrated on selected titles; some routes, including the previously sampled Black Torch middle episode, may time out. Full device, language and offline certification remain incomplete.",
+      "releaseTrack" : "beta",
+      "status" : "active",
+      "version" : "0.3.1"
     }
   ],
   "enabled" : true,
-  "generatedAt" : 1789311592,
+  "generatedAt" : 1789311677,
   "name" : "AROKI Connectors",
   "publicKey" : "BYKainAr2pxVfWxSSQJHG79Xl\/mnkTuIl1ujEmR+1V4=",
   "repositoryID" : "aroki-connectors",
   "schemaVersion" : 1,
-  "signature" : "oP+vdaJ3UYym+SVzW1w00D6C\/6qZbyHqxg7qdL1jdu5w\/Op9nu9C0VTtfrIneXUtgVz3oKbSIiYdd8TWUsemDg=="
+  "signature" : "dExLdPTEm6t6ksewh53qJ579xsd80bOqLLJiiDmJ88cSWTTk0HpmVYWeKRXd8Zbh3t6biKHevlb0vfWXy\/YGBA=="
 }
