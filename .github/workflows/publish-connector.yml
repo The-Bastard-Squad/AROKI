@@ -53,7 +53,7 @@ jobs:
         uses: actions/checkout@v5
         with:
           repository: kas021/Vireo
-          ref: 2c7f963e0f2271da7755318d0ffdc3dc158fd3e3
+          ref: ad0d4c7c57fdc6dab4d5f16dc759486f9fde7cad
           path: Vireo
           ssh-key: ${{ secrets.VIREO_READONLY_DEPLOY_KEY }}
           persist-credentials: false
