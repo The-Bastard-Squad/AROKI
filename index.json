@@ -115,16 +115,16 @@
       "id" : "synthetiq-anime-testing",
       "language" : "en",
       "manifest" : {
-        "path" : "connectors\/synthetiq-anime-testing\/releases\/f83d4fb3a28b69f275e388b62c4816c74c93bfce5eee5ea2f3163b175b1a8fed\/connector.json",
-        "sha256" : "f83d4fb3a28b69f275e388b62c4816c74c93bfce5eee5ea2f3163b175b1a8fed",
-        "signature" : "hVB9jaQPitPs7CHc2EmBlWZ4jmbKEqlVFr99eftNz\/Dgkl06BELXn2BwJ9exEvyKMON0VFu8nDR3ntRiut0oAQ=="
+        "path" : "connectors\/synthetiq-anime-testing\/releases\/b0cc91a77b35d91bd2a05160acbc513d0f93da7a7e9fad436c3926e77fb29d72\/connector.json",
+        "sha256" : "b0cc91a77b35d91bd2a05160acbc513d0f93da7a7e9fad436c3926e77fb29d72",
+        "signature" : "FisuwDkFG3sgzzyLyCA0A9pUuQTUN6wjGeZrDcvbElxS3di67sC\/trI9aX34xeAQhXGX6HMul8rew9aba9I2Ag=="
       },
       "minimumAppVersion" : "2.0.38",
-      "name" : "Synthetiq Anime (BETA - Testing only)",
-      "releaseNotes" : "Experimental native AniList\/MAL catalogue and fresh Vidhawk Flow\/Zuri tickets. Catalogue counts do not prove playback. Provider Dub labels and subtitle rendering need independent verification. Local testing only.",
+      "name" : "Synthetiq Anime",
+      "releaseNotes" : "Owner-approved public availability for Aroki 2.0.38+. Native catalogue and fresh Flow\/Zuri stream resolution. Basic owner-device playback and seeking have been demonstrated. Provider Dub\/audio mismatches and missing captions remain possible; broad language and offline certification are incomplete. Existing source identity is preserved.",
       "releaseTrack" : "beta",
       "status" : "active",
-      "version" : "0.1.0"
+      "version" : "0.1.1"
     },
     {
       "contentRating" : "unknown",
@@ -146,10 +146,10 @@
     }
   ],
   "enabled" : true,
-  "generatedAt" : 1789311110,
+  "generatedAt" : 1789311222,
   "name" : "AROKI Connectors",
   "publicKey" : "BYKainAr2pxVfWxSSQJHG79Xl\/mnkTuIl1ujEmR+1V4=",
   "repositoryID" : "aroki-connectors",
   "schemaVersion" : 1,
-  "signature" : "f8AdIyvDPRHe9ts5HwA0DkOAKXKgjDzDyc\/5tjVscMjZGzqIxLABMkjeaP38Htp2C10jxn5xZ18vRMmnTT4PCw=="
+  "signature" : "rt9dTu3ukWR+oUNSebbmCIO23PUWqiSZ2Q46CZeNGPyh\/GselRfABjIIZ1c\/X\/sKWCWxryI0f1c90B73b79gDw=="
 }
