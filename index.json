@@ -7,16 +7,16 @@
       "id" : "anikoto",
       "language" : "en",
       "manifest" : {
-        "path" : "connectors\/anikoto\/releases\/c58e0ab74c384c3d52c43d1380be8dfc956b7522d88a417d7bcc89f2600bd51d\/connector.json",
-        "sha256" : "c58e0ab74c384c3d52c43d1380be8dfc956b7522d88a417d7bcc89f2600bd51d",
-        "signature" : "8X1rkVaIfztns5T1OS5YPJGY2AYiR6KShFdXZ\/gLe5Hjy9P11oGknh\/pDxnnSunMqdfNgvw6sBBGzHtc2rDzAw=="
+        "path" : "connectors\/anikoto\/releases\/90756caaa5f97f990453fba6aa010d2ded009b87641a3f638eedbfc12169e0dc\/connector.json",
+        "sha256" : "90756caaa5f97f990453fba6aa010d2ded009b87641a3f638eedbfc12169e0dc",
+        "signature" : "2S5IpVFskYQ0Nxlks7+TMhLWbMMI9sEvtvacEjPqMwOGKrgX3FSiNXXPQ2XM3L21kFN8zxHZiEjriU7R9zxVBw=="
       },
       "minimumAppVersion" : "0.1.0",
       "name" : "AniKoto",
-      "releaseNotes" : "Restores stream resolution using MegaPlay's current source endpoint. Preserves SUB\/DUB selection, subtitle mappings, existing AniKoto identity and the existing connector schema. No app update or JavaScript runtime is introduced by this module change.",
+      "releaseNotes" : "Retired on 2026-09-14: current provider routes do not return playable streams to Aroki. No new installations or updates are offered. Existing installed copies and user data are not deleted. Choose another available source.",
       "releaseTrack" : "beta",
-      "status" : "active",
-      "version" : "0.3.8"
+      "status" : "retired",
+      "version" : "0.3.9"
     },
     {
       "contentRating" : "unknown",
@@ -182,10 +182,10 @@
     }
   ],
   "enabled" : true,
-  "generatedAt" : 1789345864,
+  "generatedAt" : 1789412684,
   "name" : "AROKI Connectors",
   "publicKey" : "BYKainAr2pxVfWxSSQJHG79Xl\/mnkTuIl1ujEmR+1V4=",
   "repositoryID" : "aroki-connectors",
   "schemaVersion" : 1,
-  "signature" : "YplEE3YpFd7AsMGyqIp46uwKbeETL+sjXVbtTxchErlT4iRONHgwDO+dv2VfaQXJN1sy\/GJ2iEK0ILwkcI2aDw=="
+  "signature" : "L5NWbpEEdpZzyuTASdNi9aGX7ZwblEUk0Z294UEqgWYGZGqq\/Lb8andPpFO3AS\/fC+7\/ZsX7zsx1L9qaf7rHAg=="
 }
