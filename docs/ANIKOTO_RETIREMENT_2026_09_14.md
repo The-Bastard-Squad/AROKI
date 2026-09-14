@@ -3,6 +3,10 @@
 Owner-authorized retirement of AniKoto only. Synthetiq One and all other sources
 remain unchanged.
 
+The optional repository preference naming AniKoto as the default was removed.
+Clients already treat a missing preference as no publisher recommendation. The
+previous preference remains recoverable in Git; users' selections are preserved.
+
 Publish version 0.3.9 with `status: retired` through the existing protected
 publishing workflow. This is a metadata-only retirement of the exact published
 0.3.8 resolver; it does not claim a repaired stream path. The native schema already
