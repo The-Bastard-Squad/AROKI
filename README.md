@@ -25,9 +25,13 @@ source at any time.
 
 ## Published connectors
 
-- AniKoto
 - One Pace
 - AnimeGG
+
+AniKoto was retired on September 14, 2026 after repeated native checks returned
+no playable stream. Refresh the collection to receive its retired status.
+Retirement stops new install/update offers; it does not remotely delete installed
+copies, downloads, saved titles or history. Synthetiq One is unchanged.
 
 The repository also contains **Update Flow Test**, a non-catalogue fixture used
 to verify source-update handling. It is not a recommended content source.
