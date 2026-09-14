@@ -3,7 +3,7 @@
   "id": "anikage",
   "familyID": "anikage",
   "name": "AniKage (BETA)",
-  "version": "0.3.1",
+  "version": "0.3.3",
   "minimumAppVersion": "0.1.0",
   "contentType": "video",
   "language": "en",
@@ -342,7 +342,7 @@
       },
       "request": {
         "method": "GET",
-        "urlTemplate": "https://anikage.cc/api/media/anime/{titleID}/episodes/{episodeID}/sources?provider=neko&lang={variant}",
+        "urlTemplate": "https://anikage.cc/api/media/anime/{titleID}/episodes/{episodeID}/sources?provider=koto&lang={variant}",
         "headers": {
           "Accept": "application/json, text/plain, */*",
           "Accept-Language": "en-US,en;q=0.9",
@@ -374,9 +374,35 @@
           "mediaTypeHint": {
             "literal": "hls"
           }
+        },
+        "subtitles": {
+          "collection": "subtitles[*]",
+          "fields": {
+            "url": {
+              "path": "file",
+              "transforms": [
+                {
+                  "op": "template",
+                  "value": "https://og.bakayaro.live/{value}",
+                  "encodeValue": false
+                }
+              ]
+            },
+            "label": {
+              "path": "label"
+            },
+            "languageCode": {
+              "path": "srclang",
+              "fallbacks": [
+                {
+                  "path": "language"
+                }
+              ]
+            }
+          }
         }
       }
     }
   },
-  "releaseNotes": "Prioritized healthy neko stream provider over dead megg/koto origins. Added bibiemb.xyz and bakayaro.live mirrors. Validated HLS playback across sub and dub."
+  "releaseNotes": "Restores provider-supplied external subtitles for Sub and Dub, preserving language labels. Fixes missing English captions on One Piece episode 1. Video resolution, provider, host permissions and audio selection are unchanged."
 }

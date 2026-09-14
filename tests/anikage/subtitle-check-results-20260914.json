@@ -1,0 +1,13 @@
+{
+  "date": "2026-09-14",
+  "candidateVersion": "0.3.3",
+  "engineRevision": "4ac3f4450c39144fe4228ee06592ea41bb89160c",
+  "fixtureChecks": {"sub": 7, "dub": 7, "result": "passed"},
+  "live": [
+    {"title":"ONE PIECE","episode":1,"variant":"sub","captionTracks":1,"label":"English","nativeParsedCues":285,"firstCueSeconds":2.63,"hls":true},
+    {"title":"ONE PIECE","episode":1,"variant":"dub","captionTracks":1,"label":"English","nativeParsedCues":285,"firstCueSeconds":2.63,"hls":true},
+    {"title":"Sword Art Online","episode":1,"variant":"sub","captionTracks":1,"label":"English","nativeParsedCues":367,"firstCueSeconds":16.917,"hls":true},
+    {"title":"Sword Art Online","episode":1,"variant":"dub","captionTracks":1,"label":"English","nativeParsedCues":367,"firstCueSeconds":16.917,"hls":true}
+  ],
+  "limitations": ["iPhone rendering unverified", "Dub subtitle timing/audio alignment unverified", "provider labels are not spoken-language certification", "no offline, PiP or AirPlay certification"]
+}
