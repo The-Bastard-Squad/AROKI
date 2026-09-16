@@ -1,11 +1,11 @@
-name: aroki_flutter
+name: aroki
 description: "AROKI Flutter - Android compatible media and connector client"
-publish_to: 'none'
+publish_to: "none"
 
 version: 2.0.38+51
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
   flutter:

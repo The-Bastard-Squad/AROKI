@@ -13,6 +13,9 @@ class ArokiAppState extends ChangeNotifier {
   ConnectorManifest? _activeManifest;
   bool _isLoadingRepo = false;
   String? _repoError;
+  final List<CatalogItem> _savedTitles = [];
+  final List<CatalogItem> _recentTitles = [];
+  final List<LibraryPlaybackItem> _playbackHistory = [];
 
   String get currentRepository => _currentRepository;
   RepositoryIndex? get repoIndex => _repoIndex;
@@ -20,6 +23,10 @@ class ArokiAppState extends ChangeNotifier {
   ConnectorManifest? get activeManifest => _activeManifest;
   bool get isLoadingRepo => _isLoadingRepo;
   String? get repoError => _repoError;
+  List<CatalogItem> get savedTitles => List.unmodifiable(_savedTitles);
+  List<CatalogItem> get recentTitles => List.unmodifiable(_recentTitles);
+  List<LibraryPlaybackItem> get playbackHistory =>
+      List.unmodifiable(_playbackHistory);
 
   ArokiAppState() {
     loadRepository(_currentRepository);
@@ -62,4 +69,68 @@ class ArokiAppState extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  bool isTitleSaved(CatalogItem item) {
+    return _savedTitles.any((saved) => saved.sourceID == item.sourceID);
+  }
+
+  void toggleSavedTitle(CatalogItem item) {
+    final existingIndex =
+        _savedTitles.indexWhere((saved) => saved.sourceID == item.sourceID);
+    if (existingIndex >= 0) {
+      _savedTitles.removeAt(existingIndex);
+    } else {
+      _savedTitles.insert(0, item);
+    }
+    notifyListeners();
+  }
+
+  void markTitleViewed(CatalogItem item) {
+    _recentTitles.removeWhere((recent) => recent.sourceID == item.sourceID);
+    _recentTitles.insert(0, item);
+    if (_recentTitles.length > 20) {
+      _recentTitles.removeRange(20, _recentTitles.length);
+    }
+    notifyListeners();
+  }
+
+  void recordPlayback({
+    required CatalogItem title,
+    required EpisodeItem episode,
+    required String variant,
+  }) {
+    _playbackHistory.removeWhere(
+      (item) =>
+          item.title.sourceID == title.sourceID &&
+          item.episode.episodeID == episode.episodeID &&
+          item.variant == variant,
+    );
+    _playbackHistory.insert(
+      0,
+      LibraryPlaybackItem(
+        title: title,
+        episode: episode,
+        variant: variant,
+        watchedAt: DateTime.now(),
+      ),
+    );
+    if (_playbackHistory.length > 30) {
+      _playbackHistory.removeRange(30, _playbackHistory.length);
+    }
+    markTitleViewed(title);
+  }
+}
+
+class LibraryPlaybackItem {
+  final CatalogItem title;
+  final EpisodeItem episode;
+  final String variant;
+  final DateTime watchedAt;
+
+  LibraryPlaybackItem({
+    required this.title,
+    required this.episode,
+    required this.variant,
+    required this.watchedAt,
+  });
 }

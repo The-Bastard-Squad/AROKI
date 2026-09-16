@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'theme/aroki_theme.dart';
 import 'state/aroki_app_state.dart';
 import 'screens/catalog_search_screen.dart';
+import 'screens/library_screen.dart';
 import 'screens/profile_sources_screen.dart';
 
 void main() {
@@ -41,9 +42,7 @@ class _MainShellScreenState extends State<MainShellScreen> {
 
   final List<Widget> _pages = [
     const CatalogSearchScreen(),
-    const Center(
-        child: Text('Library & History Screen',
-            style: TextStyle(color: Colors.white))),
+    const LibraryScreen(),
     const ProfileSourcesScreen(),
   ];
 

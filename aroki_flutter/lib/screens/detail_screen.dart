@@ -25,6 +25,8 @@ class _TitleDetailScreenState extends State<TitleDetailScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<ArokiAppState>(context, listen: false)
+          .markTitleViewed(widget.item);
       _loadEpisodes();
     });
   }
@@ -68,12 +70,29 @@ class _TitleDetailScreenState extends State<TitleDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isSaved = context.select<ArokiAppState, bool>(
+      (state) => state.isTitleSaved(widget.item),
+    );
+
     return Scaffold(
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
             expandedHeight: 280,
             pinned: true,
+            actions: [
+              IconButton(
+                tooltip: isSaved ? 'Remove from saved' : 'Save title',
+                icon: Icon(
+                  isSaved
+                      ? CupertinoIcons.bookmark_fill
+                      : CupertinoIcons.bookmark,
+                ),
+                onPressed: () {
+                  context.read<ArokiAppState>().toggleSavedTitle(widget.item);
+                },
+              ),
+            ],
             flexibleSpace: FlexibleSpaceBar(
               title: Text(
                 widget.item.title,
@@ -130,8 +149,9 @@ class _TitleDetailScreenState extends State<TitleDetailScreen> {
                         selected: _selectedVariant == 'sub',
                         selectedColor: ArokiTheme.accent,
                         onSelected: (selected) {
-                          if (selected)
+                          if (selected) {
                             setState(() => _selectedVariant = 'sub');
+                          }
                         },
                       ),
                       const SizedBox(width: 8),
@@ -140,8 +160,9 @@ class _TitleDetailScreenState extends State<TitleDetailScreen> {
                         selected: _selectedVariant == 'dub',
                         selectedColor: ArokiTheme.accent,
                         onSelected: (selected) {
-                          if (selected)
+                          if (selected) {
                             setState(() => _selectedVariant = 'dub');
+                          }
                         },
                       ),
                     ],
@@ -216,6 +237,11 @@ class _TitleDetailScreenState extends State<TitleDetailScreen> {
                               size: 26,
                             ),
                             onTap: () {
+                              context.read<ArokiAppState>().recordPlayback(
+                                    title: widget.item,
+                                    episode: ep,
+                                    variant: _selectedVariant,
+                                  );
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
