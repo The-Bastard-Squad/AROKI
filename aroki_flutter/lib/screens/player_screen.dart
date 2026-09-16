@@ -88,7 +88,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
           _selectedSubtitle = _selectedCandidate!.subtitles.first;
         }
 
-        await _initializePlayer(_selectedCandidate!.url, httpHeaders: _selectedCandidate!.headers);
+        await _initializePlayer(_selectedCandidate!);
       }
     } catch (e) {
       setState(() {
@@ -98,16 +98,29 @@ class _PlayerScreenState extends State<PlayerScreen> {
     }
   }
 
-  Future<void> _initializePlayer(String url, {Map<String, String>? httpHeaders}) async {
+  Future<void> _initializePlayer(StreamCandidate candidate) async {
     _chewieController?.dispose();
     await _videoPlayerController?.dispose();
 
     _videoPlayerController = VideoPlayerController.networkUrl(
-      Uri.parse(url),
-      httpHeaders: httpHeaders ?? {},
+      Uri.parse(candidate.url),
+      formatHint: _videoFormatFor(candidate),
+      httpHeaders: candidate.headers ?? {},
     );
 
-    await _videoPlayerController!.initialize();
+    try {
+      await _videoPlayerController!.initialize();
+    } catch (e) {
+      await _videoPlayerController?.dispose();
+      _videoPlayerController = null;
+      if (!mounted) return;
+      setState(() {
+        _error =
+            'Unable to play ${candidate.qualityLabel} stream (${candidate.mediaTypeHint}). $e';
+        _isLoading = false;
+      });
+      return;
+    }
 
     _chewieController = ChewieController(
       videoPlayerController: _videoPlayerController!,
@@ -127,9 +140,34 @@ class _PlayerScreenState extends State<PlayerScreen> {
       ),
     );
 
+    if (!mounted) return;
     setState(() {
       _isLoading = false;
     });
+  }
+
+  VideoFormat? _videoFormatFor(StreamCandidate candidate) {
+    final hint = candidate.mediaTypeHint.toLowerCase().trim();
+    final urlPath = Uri.tryParse(candidate.url)?.path.toLowerCase() ??
+        candidate.url.toLowerCase();
+
+    if (hint.contains('hls') ||
+        hint.contains('m3u8') ||
+        urlPath.endsWith('.m3u8')) {
+      return VideoFormat.hls;
+    }
+    if (hint.contains('dash') ||
+        hint.contains('mpd') ||
+        urlPath.endsWith('.mpd')) {
+      return VideoFormat.dash;
+    }
+    if (hint.contains('smooth') || hint == 'ss' || urlPath.endsWith('.ism')) {
+      return VideoFormat.ss;
+    }
+    if (hint.contains('mp4') || hint.contains('progressive')) {
+      return VideoFormat.other;
+    }
+    return null;
   }
 
   @override
@@ -147,7 +185,8 @@ class _PlayerScreenState extends State<PlayerScreen> {
             ),
             Text(
               '${widget.episode.title} (${widget.variant.toUpperCase()})',
-              style: const TextStyle(fontSize: 12, color: ArokiTheme.textSecondary),
+              style: const TextStyle(
+                  fontSize: 12, color: ArokiTheme.textSecondary),
             ),
           ],
         ),
@@ -160,13 +199,14 @@ class _PlayerScreenState extends State<PlayerScreen> {
                   _selectedCandidate = candidate;
                   _isLoading = true;
                 });
-                await _initializePlayer(candidate.url, httpHeaders: candidate.headers);
+                await _initializePlayer(candidate);
               },
               itemBuilder: (context) => _streamCandidates
                   .map(
                     (c) => PopupMenuItem<StreamCandidate>(
                       value: c,
-                      child: Text('Quality: ${c.qualityLabel} (${c.mediaTypeHint})'),
+                      child: Text(
+                          'Quality: ${c.qualityLabel} (${c.mediaTypeHint})'),
                     ),
                   )
                   .toList(),
@@ -186,7 +226,8 @@ class _PlayerScreenState extends State<PlayerScreen> {
                           SizedBox(height: 16),
                           Text(
                             'Loading stream & subtitles...',
-                            style: TextStyle(color: ArokiTheme.textSecondary, fontSize: 13),
+                            style: TextStyle(
+                                color: ArokiTheme.textSecondary, fontSize: 13),
                           ),
                         ],
                       )
@@ -196,36 +237,51 @@ class _PlayerScreenState extends State<PlayerScreen> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Icon(CupertinoIcons.exclamationmark_triangle_fill, color: Colors.orangeAccent, size: 48),
+                                const Icon(
+                                    CupertinoIcons
+                                        .exclamationmark_triangle_fill,
+                                    color: Colors.orangeAccent,
+                                    size: 48),
                                 const SizedBox(height: 12),
                                 Text(
                                   _error!,
                                   textAlign: TextAlign.center,
-                                  style: const TextStyle(color: Colors.white, fontSize: 14),
+                                  style: const TextStyle(
+                                      color: Colors.white, fontSize: 14),
                                 ),
                                 const SizedBox(height: 16),
                                 ElevatedButton(
                                   onPressed: _loadStreamAndInitialize,
-                                  style: ElevatedButton.styleFrom(backgroundColor: ArokiTheme.accent),
-                                  child: const Text('Retry Stream', style: TextStyle(color: Colors.white)),
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: ArokiTheme.accent),
+                                  child: const Text('Retry Stream',
+                                      style: TextStyle(color: Colors.white)),
                                 ),
                               ],
                             ),
                           )
-                        : _chewieController != null && _chewieController!.videoPlayerController.value.isInitialized
+                        : _chewieController != null &&
+                                _chewieController!
+                                    .videoPlayerController.value.isInitialized
                             ? Chewie(controller: _chewieController!)
-                            : const Text('Initializing player...', style: TextStyle(color: Colors.white)),
+                            : const Text('Initializing player...',
+                                style: TextStyle(color: Colors.white)),
               ),
             ),
-            if (_selectedCandidate != null && _selectedCandidate!.subtitles.isNotEmpty)
+            if (_selectedCandidate != null &&
+                _selectedCandidate!.subtitles.isNotEmpty)
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 color: ArokiTheme.cardBackground,
                 child: Row(
                   children: [
-                    const Icon(CupertinoIcons.captions_bubble_fill, color: ArokiTheme.accent, size: 20),
+                    const Icon(CupertinoIcons.captions_bubble_fill,
+                        color: ArokiTheme.accent, size: 20),
                     const SizedBox(width: 8),
-                    const Text('Subtitles: ', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
+                    const Text('Subtitles: ',
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.w600)),
                     const SizedBox(width: 8),
                     Expanded(
                       child: DropdownButton<SubtitleTrack>(
@@ -233,12 +289,14 @@ class _PlayerScreenState extends State<PlayerScreen> {
                         dropdownColor: ArokiTheme.cardBackground,
                         isExpanded: true,
                         underline: const SizedBox(),
-                        style: const TextStyle(color: Colors.white, fontSize: 13),
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 13),
                         items: _selectedCandidate!.subtitles
                             .map(
                               (sub) => DropdownMenuItem(
                                 value: sub,
-                                child: Text('${sub.label} (${sub.languageCode})'),
+                                child:
+                                    Text('${sub.label} (${sub.languageCode})'),
                               ),
                             )
                             .toList(),

@@ -49,7 +49,8 @@ class _TitleDetailScreenState extends State<TitleDetailScreen> {
     try {
       final epOp = manifest.operations['episodes'] as Map<String, dynamic>?;
       if (epOp != null) {
-        final episodes = await state.engine.fetchEpisodes(epOp, widget.item.sourceID);
+        final episodes =
+            await state.engine.fetchEpisodes(epOp, widget.item.sourceID);
         setState(() {
           _episodes = episodes;
         });
@@ -85,11 +86,13 @@ class _TitleDetailScreenState extends State<TitleDetailScreen> {
               background: Stack(
                 fit: StackFit.expand,
                 children: [
-                  widget.item.posterURL != null && widget.item.posterURL!.isNotEmpty
+                  widget.item.posterURL != null &&
+                          widget.item.posterURL!.isNotEmpty
                       ? Image.network(
                           widget.item.posterURL!,
                           fit: BoxFit.cover,
-                          errorBuilder: (_, __, ___) => Container(color: ArokiTheme.cardBackground),
+                          errorBuilder: (_, __, ___) =>
+                              Container(color: ArokiTheme.cardBackground),
                         )
                       : Container(color: ArokiTheme.cardBackground),
                   Container(
@@ -127,7 +130,8 @@ class _TitleDetailScreenState extends State<TitleDetailScreen> {
                         selected: _selectedVariant == 'sub',
                         selectedColor: ArokiTheme.accent,
                         onSelected: (selected) {
-                          if (selected) setState(() => _selectedVariant = 'sub');
+                          if (selected)
+                            setState(() => _selectedVariant = 'sub');
                         },
                       ),
                       const SizedBox(width: 8),
@@ -136,7 +140,8 @@ class _TitleDetailScreenState extends State<TitleDetailScreen> {
                         selected: _selectedVariant == 'dub',
                         selectedColor: ArokiTheme.accent,
                         onSelected: (selected) {
-                          if (selected) setState(() => _selectedVariant = 'dub');
+                          if (selected)
+                            setState(() => _selectedVariant = 'dub');
                         },
                       ),
                     ],
@@ -155,13 +160,16 @@ class _TitleDetailScreenState extends State<TitleDetailScreen> {
                     const Center(
                       child: Padding(
                         padding: EdgeInsets.all(24.0),
-                        child: CircularProgressIndicator(color: ArokiTheme.accent),
+                        child:
+                            CircularProgressIndicator(color: ArokiTheme.accent),
                       ),
                     )
                   else if (_error != null)
-                    Text('Error: $_error', style: const TextStyle(color: Colors.redAccent))
+                    Text('Error: $_error',
+                        style: const TextStyle(color: Colors.redAccent))
                   else if (_episodes.isEmpty)
-                    const Text('No episodes listed.', style: TextStyle(color: ArokiTheme.textSecondary))
+                    const Text('No episodes listed.',
+                        style: TextStyle(color: ArokiTheme.textSecondary))
                   else
                     ListView.separated(
                       shrinkWrap: true,
@@ -170,18 +178,21 @@ class _TitleDetailScreenState extends State<TitleDetailScreen> {
                       separatorBuilder: (_, __) => const SizedBox(height: 8),
                       itemBuilder: (context, index) {
                         final ep = _episodes[index];
-                        return Container(
-                          decoration: BoxDecoration(
-                            color: ArokiTheme.cardBackground,
+                        return Material(
+                          color: ArokiTheme.cardBackground,
+                          clipBehavior: Clip.antiAlias,
+                          shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: ArokiTheme.cardBorder),
+                            side:
+                                const BorderSide(color: ArokiTheme.cardBorder),
                           ),
                           child: ListTile(
                             leading: Container(
                               width: 36,
                               height: 36,
                               decoration: BoxDecoration(
-                                color: ArokiTheme.accent.withValues(alpha: 0.15),
+                                color:
+                                    ArokiTheme.accent.withValues(alpha: 0.15),
                                 shape: BoxShape.circle,
                               ),
                               child: Center(
@@ -196,7 +207,8 @@ class _TitleDetailScreenState extends State<TitleDetailScreen> {
                             ),
                             title: Text(
                               ep.title,
-                              style: const TextStyle(color: ArokiTheme.textPrimary, fontSize: 14),
+                              style: const TextStyle(
+                                  color: ArokiTheme.textPrimary, fontSize: 14),
                             ),
                             trailing: const Icon(
                               CupertinoIcons.play_circle_fill,
