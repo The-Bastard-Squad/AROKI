@@ -1,0 +1,27 @@
+name: aroki_flutter
+description: "AROKI Flutter - Android compatible media and connector client"
+publish_to: 'none'
+
+version: 2.0.38+51
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  http: ^1.2.0
+  crypto: ^3.0.3
+  shared_preferences: ^2.2.2
+  provider: ^6.1.1
+  video_player: ^2.8.2
+  chewie: ^1.7.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
