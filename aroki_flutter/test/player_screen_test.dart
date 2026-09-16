@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
-import 'package:aroki_flutter/models/connector_models.dart';
-import 'package:aroki_flutter/state/aroki_app_state.dart';
-import 'package:aroki_flutter/screens/player_screen.dart';
-import 'package:aroki_flutter/theme/aroki_theme.dart';
+import 'package:aroki/models/connector_models.dart';
+import 'package:aroki/state/aroki_app_state.dart';
+import 'package:aroki/screens/player_screen.dart';
+import 'package:aroki/theme/aroki_theme.dart';
 
 void main() {
-  testWidgets('PlayerScreen renders title and episode header info', (WidgetTester tester) async {
+  testWidgets('PlayerScreen renders title and episode header info',
+      (WidgetTester tester) async {
     final catalogItem = CatalogItem(
       sourceID: 'naruto',
       title: 'Naruto',

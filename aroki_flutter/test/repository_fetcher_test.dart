@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:aroki_flutter/services/repository_fetcher_service.dart';
+import 'package:aroki/services/repository_fetcher_service.dart';
 
 void main() {
   group('Repository Fetcher & Digest Tests', () {
@@ -22,11 +22,14 @@ void main() {
       final bytes = utf8.encode(jsonStr);
       final validSha = sha256.convert(bytes).toString();
 
-      final manifest = service.parseConnectorManifest(jsonStr, expectedSha256: validSha);
+      final manifest =
+          service.parseConnectorManifest(jsonStr, expectedSha256: validSha);
       expect(manifest.id, 'anikage');
 
       expect(
-        () => service.parseConnectorManifest(jsonStr, expectedSha256: '0000000000000000000000000000000000000000000000000000000000000000'),
+        () => service.parseConnectorManifest(jsonStr,
+            expectedSha256:
+                '0000000000000000000000000000000000000000000000000000000000000000'),
         throwsA(isA<Exception>()),
       );
     });

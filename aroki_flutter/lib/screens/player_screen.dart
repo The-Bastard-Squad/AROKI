@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../models/connector_models.dart';
 import '../state/aroki_app_state.dart';
 import '../theme/aroki_theme.dart';
@@ -30,6 +31,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
   StreamCandidate? _selectedCandidate;
   SubtitleTrack? _selectedSubtitle;
   bool _isLoading = true;
+  bool _isUsingAppPlayer = false;
   String? _error;
 
   @override
@@ -88,7 +90,14 @@ class _PlayerScreenState extends State<PlayerScreen> {
           _selectedSubtitle = _selectedCandidate!.subtitles.first;
         }
 
-        await _initializePlayer(_selectedCandidate!);
+        setState(() {
+          _isLoading = false;
+        });
+      } else {
+        setState(() {
+          _error = 'This connector does not define a streams operation.';
+          _isLoading = false;
+        });
       }
     } catch (e) {
       setState(() {
@@ -101,6 +110,13 @@ class _PlayerScreenState extends State<PlayerScreen> {
   Future<void> _initializePlayer(StreamCandidate candidate) async {
     _chewieController?.dispose();
     await _videoPlayerController?.dispose();
+
+    if (!mounted) return;
+    setState(() {
+      _isLoading = true;
+      _isUsingAppPlayer = true;
+      _error = null;
+    });
 
     _videoPlayerController = VideoPlayerController.networkUrl(
       Uri.parse(candidate.url),
@@ -144,6 +160,38 @@ class _PlayerScreenState extends State<PlayerScreen> {
     setState(() {
       _isLoading = false;
     });
+  }
+
+  Future<void> _openExternalPlayer(StreamCandidate candidate) async {
+    await _videoPlayerController?.pause();
+    final uri = Uri.tryParse(candidate.url);
+    if (uri == null) {
+      setState(() {
+        _error = 'Unable to open external player: stream URL is invalid.';
+      });
+      return;
+    }
+
+    if (candidate.headers != null && candidate.headers!.isNotEmpty && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'This stream uses playback headers. Some external players may not accept it.',
+          ),
+        ),
+      );
+    }
+
+    final launched = await launchUrl(
+      uri,
+      mode: LaunchMode.externalApplication,
+    );
+    if (!launched && mounted) {
+      setState(() {
+        _error =
+            'No external app could open this stream. Try the in-app player instead.';
+      });
+    }
   }
 
   VideoFormat? _videoFormatFor(StreamCandidate candidate) {
@@ -197,9 +245,13 @@ class _PlayerScreenState extends State<PlayerScreen> {
               onSelected: (candidate) async {
                 setState(() {
                   _selectedCandidate = candidate;
-                  _isLoading = true;
+                  _selectedSubtitle = candidate.subtitles.isNotEmpty
+                      ? candidate.subtitles.first
+                      : null;
                 });
-                await _initializePlayer(candidate);
+                if (_isUsingAppPlayer) {
+                  await _initializePlayer(candidate);
+                }
               },
               itemBuilder: (context) => _streamCandidates
                   .map(
@@ -210,6 +262,13 @@ class _PlayerScreenState extends State<PlayerScreen> {
                     ),
                   )
                   .toList(),
+            ),
+          if (_selectedCandidate != null)
+            IconButton(
+              tooltip: 'Open in another app',
+              icon: const Icon(CupertinoIcons.arrow_up_right_square,
+                  color: Colors.white),
+              onPressed: () => _openExternalPlayer(_selectedCandidate!),
             ),
         ],
       ),
@@ -260,12 +319,20 @@ class _PlayerScreenState extends State<PlayerScreen> {
                               ],
                             ),
                           )
-                        : _chewieController != null &&
-                                _chewieController!
-                                    .videoPlayerController.value.isInitialized
-                            ? Chewie(controller: _chewieController!)
-                            : const Text('Initializing player...',
-                                style: TextStyle(color: Colors.white)),
+                        : !_isUsingAppPlayer && _selectedCandidate != null
+                            ? _PlaybackChoice(
+                                candidate: _selectedCandidate!,
+                                onPlayInApp: () =>
+                                    _initializePlayer(_selectedCandidate!),
+                                onOpenExternal: () =>
+                                    _openExternalPlayer(_selectedCandidate!),
+                              )
+                            : _chewieController != null &&
+                                    _chewieController!.videoPlayerController
+                                        .value.isInitialized
+                                ? Chewie(controller: _chewieController!)
+                                : const Text('Initializing player...',
+                                    style: TextStyle(color: Colors.white)),
               ),
             ),
             if (_selectedCandidate != null &&
@@ -312,6 +379,99 @@ class _PlayerScreenState extends State<PlayerScreen> {
               ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _PlaybackChoice extends StatelessWidget {
+  final StreamCandidate candidate;
+  final VoidCallback onPlayInApp;
+  final VoidCallback onOpenExternal;
+
+  const _PlaybackChoice({
+    required this.candidate,
+    required this.onPlayInApp,
+    required this.onOpenExternal,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final hasHeaders =
+        candidate.headers != null && candidate.headers!.isNotEmpty;
+
+    return Padding(
+      padding: const EdgeInsets.all(24),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(
+            CupertinoIcons.play_rectangle_fill,
+            color: ArokiTheme.accent,
+            size: 48,
+          ),
+          const SizedBox(height: 14),
+          Text(
+            'Ready to play ${candidate.qualityLabel}',
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 17,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            '${candidate.mediaTypeHint.toUpperCase()} stream',
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              color: ArokiTheme.textSecondary,
+              fontSize: 13,
+            ),
+          ),
+          if (hasHeaders) ...[
+            const SizedBox(height: 12),
+            const Text(
+              'This stream needs playback headers, so the in-app player is more reliable.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: ArokiTheme.warning,
+                fontSize: 12,
+                height: 1.35,
+              ),
+            ),
+          ],
+          const SizedBox(height: 22),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton.icon(
+              onPressed: onPlayInApp,
+              icon: const Icon(CupertinoIcons.play_fill, color: Colors.white),
+              label: const Text(
+                'Play in AROKI',
+                style: TextStyle(color: Colors.white),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: ArokiTheme.accent,
+                padding: const EdgeInsets.symmetric(vertical: 13),
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+          SizedBox(
+            width: double.infinity,
+            child: OutlinedButton.icon(
+              onPressed: onOpenExternal,
+              icon: const Icon(CupertinoIcons.arrow_up_right_square),
+              label: const Text('Open in another app'),
+              style: OutlinedButton.styleFrom(
+                foregroundColor: Colors.white,
+                side: const BorderSide(color: ArokiTheme.cardBorder),
+                padding: const EdgeInsets.symmetric(vertical: 13),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

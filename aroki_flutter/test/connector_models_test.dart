@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:aroki_flutter/models/connector_models.dart';
+import 'package:aroki/models/connector_models.dart';
 
 void main() {
   group('Connector Models Unit Tests', () {
@@ -27,7 +27,8 @@ void main() {
             'releaseNotes': 'Test notes',
             'manifest': {
               'path': 'connectors/anikage/connector.json',
-              'sha256': '70e5a37f0ea1a97c637f65be7b751be892b64b1bdbf520da70114fa5926fd657',
+              'sha256':
+                  '70e5a37f0ea1a97c637f65be7b751be892b64b1bdbf520da70114fa5926fd657',
               'signature': 'sig123'
             }
           }
@@ -55,7 +56,14 @@ void main() {
         'releaseTrack': 'beta',
         'status': 'active',
         'allowedHosts': ['anikage.cc', 'og.bakayaro.live'],
-        'capabilities': ['discovery', 'search', 'details', 'episodes', 'streams'],
+        'capabilities': [
+          'discovery',
+          'search',
+          'details',
+          'episodes',
+          'streams'
+        ],
+        'downloadSupport': 'progressive',
         'operations': {'discovery': {}}
       };
 
@@ -64,6 +72,30 @@ void main() {
       expect(manifest.allowedHosts.length, 2);
       expect(manifest.capabilities.contains('streams'), isTrue);
       expect(manifest.operations.containsKey('discovery'), isTrue);
+      expect(manifest.downloadSupport, 'progressive');
+      expect(manifest.isDownloadable(), isTrue);
+    });
+
+    test('ConnectorManifest allows progressive stream fallback downloads', () {
+      final manifest = ConnectorManifest.fromJson({
+        'id': 'fallback',
+        'familyID': 'fallback',
+        'name': 'Fallback',
+        'version': '1.0.0',
+        'downloadSupport': 'none',
+      });
+
+      expect(manifest.isDownloadable(), isFalse);
+      expect(
+        manifest.isDownloadable(
+          StreamCandidate(
+            url: 'https://cdn.example.com/video.mp4?token=abc',
+            qualityLabel: '720p',
+            mediaTypeHint: 'auto',
+          ),
+        ),
+        isTrue,
+      );
     });
   });
 }

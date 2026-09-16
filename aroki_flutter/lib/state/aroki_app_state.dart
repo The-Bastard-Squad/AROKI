@@ -2,10 +2,12 @@ import 'package:flutter/foundation.dart';
 import '../models/connector_models.dart';
 import '../services/repository_fetcher_service.dart';
 import '../services/declarative_extraction_engine.dart';
+import '../services/download_task_store.dart';
 
 class ArokiAppState extends ChangeNotifier {
   final RepositoryFetcherService fetcherService = RepositoryFetcherService();
   final DeclarativeExtractionEngine engine = DeclarativeExtractionEngine();
+  final DownloadTaskStore downloadTaskStore = DownloadTaskStore();
 
   String _currentRepository = 'kas021/AROKI-Connectors';
   RepositoryIndex? _repoIndex;
@@ -72,6 +74,18 @@ class ArokiAppState extends ChangeNotifier {
 
   bool isTitleSaved(CatalogItem item) {
     return _savedTitles.any((saved) => saved.sourceID == item.sourceID);
+  }
+
+  Future<bool> isOffline({
+    required String connectorId,
+    required String episodeID,
+    required String variant,
+  }) {
+    return downloadTaskStore.isOffline(
+      connectorId: connectorId,
+      episodeID: episodeID,
+      variant: variant,
+    );
   }
 
   void toggleSavedTitle(CatalogItem item) {

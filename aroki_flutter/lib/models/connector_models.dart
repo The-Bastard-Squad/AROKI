@@ -96,7 +96,8 @@ class RepositoryIndex {
 
   factory RepositoryIndex.fromJson(Map<String, dynamic> json) {
     final list = (json['connectors'] as List<dynamic>?)
-            ?.map((e) => RepositoryConnectorEntry.fromJson(e as Map<String, dynamic>))
+            ?.map((e) =>
+                RepositoryConnectorEntry.fromJson(e as Map<String, dynamic>))
             .toList() ??
         [];
     return RepositoryIndex(
@@ -126,6 +127,7 @@ class ConnectorManifest {
   final List<String> allowedHosts;
   final List<String> capabilities;
   final Map<String, dynamic> operations;
+  final String downloadSupport;
   final String? releaseNotes;
 
   ConnectorManifest({
@@ -142,6 +144,7 @@ class ConnectorManifest {
     required this.allowedHosts,
     required this.capabilities,
     required this.operations,
+    required this.downloadSupport,
     this.releaseNotes,
   });
 
@@ -166,8 +169,14 @@ class ConnectorManifest {
               .toList() ??
           [],
       operations: (json['operations'] as Map<String, dynamic>?) ?? {},
+      downloadSupport: json['downloadSupport'] as String? ?? 'none',
       releaseNotes: json['releaseNotes'] as String?,
     );
+  }
+
+  bool isDownloadable([StreamCandidate? stream]) {
+    if (downloadSupport.toLowerCase() != 'none') return true;
+    return stream?.isProgressiveDownload ?? false;
   }
 }
 
@@ -225,4 +234,11 @@ class StreamCandidate {
     this.headers,
     this.subtitles = const [],
   });
+
+  bool get isProgressiveDownload {
+    final path = Uri.tryParse(url)?.path.toLowerCase() ?? url.toLowerCase();
+    return path.endsWith('.mp4') ||
+        path.endsWith('.mkv') ||
+        path.endsWith('.webm');
+  }
 }

@@ -34,13 +34,6 @@ class ArokiTheme {
           letterSpacing: -0.5,
         ),
       ),
-      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        backgroundColor: Color(0xEE12131C),
-        selectedItemColor: accent,
-        unselectedItemColor: textSecondary,
-        type: BottomNavigationBarType.fixed,
-        elevation: 8,
-      ),
       cardTheme: CardThemeData(
         color: cardBackground,
         elevation: 0,
