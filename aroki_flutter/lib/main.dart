@@ -41,7 +41,9 @@ class _MainShellScreenState extends State<MainShellScreen> {
 
   final List<Widget> _pages = [
     const CatalogSearchScreen(),
-    const Center(child: Text('Library & History Screen', style: TextStyle(color: Colors.white))),
+    const Center(
+        child: Text('Library & History Screen',
+            style: TextStyle(color: Colors.white))),
     const ProfileSourcesScreen(),
   ];
 
